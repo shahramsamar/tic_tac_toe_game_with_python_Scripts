@@ -1,39 +1,41 @@
-   
-        
-from player import HumanPlayer, RandomComputerPlayer
-import time
 import math
+import time
+
+from player import HumanPlayer, RandomComputerPlayer
+
 
 class TicTacToe:
     def __init__(self):
-        self.board = [' ' for _ in range(9)]  # We will use a single list to represent a 3x3 board
+        self.board = [
+            " " for _ in range(9)
+        ]  # We will use a single list to represent a 3x3 board
         self.current_winner = None  # Keep track of winner
 
     def print_board(self):
         # This is just getting the rows
-        for row in [self.board[i * 3:(i + 1) * 3] for i in range(3)]:
-            print('|' + '|'.join(row) + '|')
+        for row in [self.board[i * 3 : (i + 1) * 3] for i in range(3)]:
+            print("|" + "|".join(row) + "|")
 
     @staticmethod
     def print_board_nums():
         # 0 | 1 | 2 etc. tells us what number corresponds to what box
         number_board = [[str(i) for i in range(j * 3, (j + 1) * 3)] for j in range(3)]
         for row in number_board:
-            print('|' + '|'.join(row) + '|')
+            print("|" + "|".join(row) + "|")
 
     def available_moves(self):
-        return [i for i, spot in enumerate(self.board) if spot == ' ']
+        return [i for i, spot in enumerate(self.board) if spot == " "]
 
     def empty_squares(self):
-        return ' ' in self.board
+        return " " in self.board
 
     def num_empty_squares(self):
-        return self.board.count(' ')
+        return self.board.count(" ")
 
     def make_move(self, square, letter):
         # If valid move, then make the move and assign square to letter
         # Then return True. If invalid, return False
-        if self.board[square] == ' ':
+        if self.board[square] == " ":
             self.board[square] = letter
             if self.winner(square, letter):
                 self.current_winner = letter
@@ -44,7 +46,7 @@ class TicTacToe:
         # Winner if 3 in a row anywhere.. we have to check all of these!
         # First let's check the row
         row_index = math.floor(square // 3)
-        row = self.board[row_index * 3:(row_index + 1) * 3]
+        row = self.board[row_index * 3 : (row_index + 1) * 3]
         if all([spot == letter for spot in row]):
             return True
 
@@ -74,11 +76,11 @@ def play(game, x_player, o_player, print_game=True):
     if print_game:
         game.print_board_nums()
 
-    letter = 'X'  # Starting letter
+    letter = "X"  # Starting letter
     # Iterate while the game still has empty squares
     while game.empty_squares():
         # Get the move from the appropriate player
-        if letter == 'O':
+        if letter == "O":
             square = o_player.get_move(game)
         else:
             square = x_player.get_move(game)
@@ -86,28 +88,27 @@ def play(game, x_player, o_player, print_game=True):
         # Define a function to make a move
         if game.make_move(square, letter):
             if print_game:
-                print(letter + f' makes a move to square {square}')
+                print(letter + f" makes a move to square {square}")
                 game.print_board()
-                print('')  # Just empty line
+                print("")  # Just empty line
 
             if game.current_winner:
                 if print_game:
-                    print(letter + ' wins!')
+                    print(letter + " wins!")
                 return letter
 
             # After we made our move, we need to alternate letters
-            letter = 'O' if letter == 'X' else 'X'  # Switches player
+            letter = "O" if letter == "X" else "X"  # Switches player
 
         # Tiny break to make the game easier to read
         time.sleep(0.8)
 
     if print_game:
-        print('It\'s a tie!')
+        print("It's a tie!")
 
 
-if __name__ == '__main__':
-    x_player = HumanPlayer('X')
-    o_player = RandomComputerPlayer('O')
+if __name__ == "__main__":
+    x_player = HumanPlayer("X")
+    o_player = RandomComputerPlayer("O")
     t = TicTacToe()
     play(t, x_player, o_player, print_game=True)
-                                   
